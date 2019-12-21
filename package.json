@@ -1,7 +1,7 @@
 {
   "name": "@nerdo/cal",
   "version": "0.0.1-alpha",
-  "description": "A JavaScript calendar rendering engine.",
+  "description": "A JavaScript calendar representation engine.",
   "main": "src/index.js",
   "scripts": {
     "test": "jest",

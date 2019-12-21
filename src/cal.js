@@ -4,7 +4,7 @@ import { map } from './map'
 const defaults = {
   represent: {
     unit: 'month',
-    date: () => new Cal.DateAdapter()
+    date: () => new cal.DateAdapter()
   }
 }
 
@@ -17,7 +17,7 @@ const cloneSimpleObject = o => typeof o === 'object' && Object.getPrototypeOf(o)
 
 const expandDefaults = obj => map(obj, v => typeof v === 'function' ? v() : cloneSimpleObject(v))
 
-export class Cal {
+export const cal = {
   represent (args = expandDefaults(defaults.represent)) {
     const {
       unit = getDefault('represent.unit'),
@@ -30,7 +30,7 @@ export class Cal {
     }
   }
 }
-Cal.DateAdapter = Date
+cal.DateAdapter = Date
 
-module.exports.Cal = Cal
-export default Cal
+module.exports.cal = cal
+export default cal

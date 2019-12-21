@@ -6,7 +6,7 @@ const config = {
 		{
 			file: 'build/index.js',
       format: 'umd',
-      name: 'Cal'
+      name: 'cal'
     }
 	],
 	plugins: [babel()]
