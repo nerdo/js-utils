@@ -1,0 +1,24 @@
+{
+  "name": "cal",
+  "version": "0.0.1-alpha",
+  "description": "A JavaScript calendar rendering engine.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Dannel Albert <cuebix@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.7.0",
+    "jest": "^24.9.0"
+  },
+  "babel": {
+    "env": {
+      "test": {
+        "plugins": [
+          "@babel/plugin-transform-modules-commonjs"
+        ]
+      }
+    }
+  }
+}
