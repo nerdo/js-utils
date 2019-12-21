@@ -14,51 +14,51 @@ describe('map', () => {
   describe('identity mapper', () => {
     const identity = v => v
 
-    it('should not call the mapper on an undefined object', () => {
+    it('should call the mapper on undefined', () => {
       const mapper = jest.fn(identity)
       map(void 0, mapper)
-      expect(mapper.mock.calls.length).toBe(0)
+      expect(mapper.mock.calls.length).toBe(1)
     })
 
-    it('should not call the mapper on an object with no properties', () => {
+    it('should call the mapper on an object with no properties', () => {
       const mapper = jest.fn(identity)
       map({}, mapper)
-      expect(mapper.mock.calls.length).toBe(0)
+      expect(mapper.mock.calls.length).toBe(1)
     })
 
     it('should not traverse a number property', () => {
       const mapper = jest.fn(identity)
       const obj = { a: 1 }
       map(obj, mapper)
-      expect(mapper.mock.calls.length).toBe(1)
+      expect(mapper.mock.calls.length).toBe(2)
     })
 
     it('should not traverse a string property', () => {
       const mapper = jest.fn(identity)
       const obj = { a: '' }
       map(obj, mapper)
-      expect(mapper.mock.calls.length).toBe(1)
+      expect(mapper.mock.calls.length).toBe(2)
     })
 
     it('should not traverse a boolean property', () => {
       const mapper = jest.fn(identity)
       const obj = { a: false }
       map(obj, mapper)
-      expect(mapper.mock.calls.length).toBe(1)
+      expect(mapper.mock.calls.length).toBe(2)
     })
 
     it('should not traverse a null property', () => {
       const mapper = jest.fn(identity)
       const obj = { a: null }
       map(obj, mapper)
-      expect(mapper.mock.calls.length).toBe(1)
+      expect(mapper.mock.calls.length).toBe(2)
     })
 
     it('should not traverse an undefined property', () => {
       const mapper = jest.fn(identity)
       const obj = { a: void 0 }
       map(obj, mapper)
-      expect(mapper.mock.calls.length).toBe(1)
+      expect(mapper.mock.calls.length).toBe(2)
     })
 
     it('should not traverse an array', () => {
@@ -71,21 +71,21 @@ describe('map', () => {
         ]
       }
       map(obj, mapper)
-      expect(mapper.mock.calls.length).toBe(1)
+      expect(mapper.mock.calls.length).toBe(2)
     })
 
     it('should not traverse a function', () => {
       const mapper = jest.fn(identity)
       const obj = { a: function () {} }
       map(obj, mapper)
-      expect(mapper.mock.calls.length).toBe(1)
+      expect(mapper.mock.calls.length).toBe(2)
     })
 
     it('should not traverse symbol nodes', () => {
       const mapper = jest.fn(identity)
       const obj = { [Symbol.for('testing')]: 1 }
       map(obj, mapper)
-      expect(mapper.mock.calls.length).toBe(0)
+      expect(mapper.mock.calls.length).toBe(1)
     })
 
     it('should traverse a simple, flat object', () => {
@@ -96,7 +96,7 @@ describe('map', () => {
         c: 3
       }
       map(obj, mapper)
-      expect(mapper.mock.calls.length).toBe(3)
+      expect(mapper.mock.calls.length).toBe(4)
     })
 
     it('should traverse a simple, nested object', () => {
@@ -112,7 +112,7 @@ describe('map', () => {
         c: 3
       }
       map(obj, mapper)
-      expect(mapper.mock.calls.length).toBe(6)
+      expect(mapper.mock.calls.length).toBe(7)
     })
 
     it('should call the mapper once for each nested object property', () => {
@@ -134,18 +134,18 @@ describe('map', () => {
         },
         bar: {
           justice: {
-            symbol: Symbol.for('something else') // yes
+            symbol: Symbol.for('something else')
           },
           hello: {
-            1: [0, 1, 2], // yes
-            kitty: {} // yes
+            1: [0, 1, 2],
+            kitty: {}
           }
         },
-        notPlainObject: new NotPlainObject() // yes
+        notPlainObject: new NotPlainObject()
       }
 
       map(obj, mapper)
-      expect(mapper.mock.calls.length).toBe(15)
+      expect(mapper.mock.calls.length).toBe(16)
     })
   })
 
@@ -170,7 +170,8 @@ describe('map', () => {
 
       map(obj, mapper)
 
-      expect(mapper.mock.calls.length).toBe(3)
+      expect(mapper.mock.calls.length).toBe(4)
+      expect(pathsCalled.includes('')).toBe(true)
       expect(pathsCalled.includes('a')).toBe(true)
       expect(pathsCalled.includes('a.b')).toBe(true)
       expect(pathsCalled.includes('a.b.c')).toBe(true)

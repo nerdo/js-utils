@@ -14,7 +14,10 @@ const recursiveMap = function (obj, mapper, meta) {
   return obj
 }
 
-export const map = (obj, mapper) => recursiveMap(obj, mapper, {root: obj, parentPath: []})
+export const map = function (obj, mapper) {
+  const subject = typeof mapper === 'function' ? mapper(obj, {object: obj, path: []}) : obj
+  return recursiveMap(subject, mapper, {root: obj, parentPath: []})
+}
 
 module.exports.map = map
 export default map
