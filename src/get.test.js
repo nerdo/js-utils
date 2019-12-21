@@ -22,11 +22,13 @@ describe('get', () => {
       const result = get(obj, 'a.b.c', 'the default value')
       expect(result).toBe('the default value')
     })
+
     it('should return the value for a top level path', () => {
       const obj = {a: 1}
       const result = get(obj, 'a')
       expect(result).toBe(obj.a)
     })
+
     it('should return the value for a nested path', () => {
       const obj = {
         a: {
@@ -48,11 +50,13 @@ describe('get', () => {
       const result = get(obj, ['a', 'b', 'c'], 'the default value')
       expect(result).toBe('the default value')
     })
+
     it('should return the value for a top level path', () => {
       const obj = {a: 1}
       const result = get(obj, ['a'])
       expect(result).toBe(obj.a)
     })
+
     it('should return the value for a nested path', () => {
       const obj = {
         a: {
