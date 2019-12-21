@@ -1,12 +1,15 @@
-var rollup = require("rollup")
-var babel = require("rollup-plugin-babel")
+import babel from 'rollup-plugin-babel'
 
-rollup.rollup({
-  entry: "src/main.js",
-  plugins: [ babel() ]
-}).then(function (bundle) {
-  bundle.write({
-    dest: "dist/bundle.js",
-    format: "umd"
-  })
-})
+const config = {
+	input: 'src/index.js',
+	output: [
+		{
+			file: 'build/index.js',
+      format: 'umd',
+      name: 'Cal'
+    }
+	],
+	plugins: [babel()]
+}
+
+export default config

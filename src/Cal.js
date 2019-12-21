@@ -4,7 +4,7 @@ const defaults = {
   }
 }
 
-class Cal {
+export class Cal {
   constructor(args = defaults.constructor) {
     const {
       DateAdapter = defaults.constructor.DateAdapter

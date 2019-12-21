@@ -1,8 +1,8 @@
 {
-  "name": "cal",
+  "name": "@nerdo/cal",
   "version": "0.0.1-alpha",
   "description": "A JavaScript calendar rendering engine.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "jest"
   },
@@ -10,7 +10,10 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.7.0",
-    "jest": "^24.9.0"
+    "@babel/preset-env": "^7.7.7",
+    "jest": "^24.9.0",
+    "rollup": "^1.27.13",
+    "rollup-plugin-babel": "^4.3.3"
   },
   "babel": {
     "env": {
@@ -19,6 +22,11 @@
           "@babel/plugin-transform-modules-commonjs"
         ]
       }
-    }
+    },
+    "presets": [
+      [
+        "@babel/env"
+      ]
+    ]
   }
 }

@@ -1,4 +1,4 @@
-import Cal from './Cal'
+import { Cal } from './Cal'
 
 describe('Cal', () => {
   it('should be a function', () => {
