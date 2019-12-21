@@ -1,8 +1,8 @@
-// const defaults = {
-//   constructor: {
-//     DateAdapter: Date
-//   }
-// }
+const defaults = {
+  represent: {
+    unit: 'month'
+  }
+}
 
 export class Cal {
   // constructor(args = defaults.constructor) {
@@ -12,7 +12,14 @@ export class Cal {
   //   this.DateAdapter = DateAdapter
   // }
 
-  represent () {
+  represent (args = defaults.represent) {
+    const {
+      unit = defaults.represent.unit
+    } = args
+
+    return {
+      unit
+    }
   }
 }
 
