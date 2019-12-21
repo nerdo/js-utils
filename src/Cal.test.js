@@ -19,16 +19,39 @@ describe('Cal', () => {
           expect(rep.unit).toBe('month')
         })
 
-        it('should default to "month"', () => {
+        it('should default to "month" with no other arguments', () => {
           const cal = new Cal()
           const rep = cal.represent()
           expect(rep.unit).toBe('month')
         })
 
-        it('should default to "month" with other arguments present', () => {
+        it('should default to "month" with other arguments', () => {
           const cal = new Cal()
           const rep = cal.represent({foo: 'bar'})
           expect(rep.unit).toBe('month')
+        })
+      })
+
+      describe('date', () => {
+        it('should be returned in the representation', () => {
+          const cal = new Cal()
+          const date = new Date()
+          const rep = cal.represent({ date })
+          expect(rep.date).toBe(date)
+        })
+        it('should default to the current date with no other arguments', () => {
+          const DateAdapter = class {}
+          Cal.DateAdapter = DateAdapter
+          const cal = new Cal()
+          const rep = cal.represent()
+          expect(rep.date).toBeInstanceOf(DateAdapter)
+        })
+        it('should default to the current date with other arguments', () => {
+          const DateAdapter = class {}
+          Cal.DateAdapter = DateAdapter
+          const cal = new Cal()
+          const rep = cal.represent({foo: 'bar'})
+          expect(rep.date).toBeInstanceOf(DateAdapter)
         })
       })
     })

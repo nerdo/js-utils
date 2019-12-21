@@ -1,27 +1,31 @@
+import { get } from './get'
+
 const defaults = {
   represent: {
-    unit: 'month'
+    unit: 'month',
+    date: () => new Cal.DateAdapter()
   }
+}
+
+const getDefault = function (path) {
+  const value = get(defaults, path)
+  return (typeof value === 'function') ? value() : value
 }
 
 export class Cal {
-  // constructor(args = defaults.constructor) {
-  //   const {
-  //     DateAdapter = defaults.constructor.DateAdapter
-  //   } = args
-  //   this.DateAdapter = DateAdapter
-  // }
-
   represent (args = defaults.represent) {
     const {
-      unit = defaults.represent.unit
+      unit = getDefault('represent.unit'),
+      date = getDefault('represent.date')
     } = args
 
     return {
-      unit
+      unit,
+      date
     }
   }
 }
+Cal.DateAdapter = Date
 
 module.exports.Cal = Cal
 export default Cal
