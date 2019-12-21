@@ -39,6 +39,7 @@ describe('Cal', () => {
           const rep = cal.represent({ date })
           expect(rep.date).toBe(date)
         })
+
         it('should default to the current date with no other arguments', () => {
           const DateAdapter = class {}
           Cal.DateAdapter = DateAdapter
@@ -46,6 +47,7 @@ describe('Cal', () => {
           const rep = cal.represent()
           expect(rep.date).toBeInstanceOf(DateAdapter)
         })
+
         it('should default to the current date with other arguments', () => {
           const DateAdapter = class {}
           Cal.DateAdapter = DateAdapter
