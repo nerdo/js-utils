@@ -11,6 +11,9 @@ export class Cal {
   //   } = args
   //   this.DateAdapter = DateAdapter
   // }
+
+  represent () {
+  }
 }
 
 module.exports.Cal = Cal
