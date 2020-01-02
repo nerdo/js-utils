@@ -36,6 +36,17 @@ export const cal = {
 cal.DateAdapter = Date
 
 const representUnit = function (args) {
+  const {
+    unit,
+    ...unitArgs
+  } = args
+
+  if (unit === 'month') {
+    return representMonth(unitArgs)
+  }
+}
+
+const representMonth = function (args) {
   return {
     month: {
       weeks: [
