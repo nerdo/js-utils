@@ -1,23 +1,6 @@
 import { get } from './get'
 import { map } from './map'
 
-const defaults = {
-  represent: {
-    unit: 'month',
-    date: () => new cal.DateAdapter(),
-    startingDayOfWeek: 0
-  }
-}
-
-const getDefault = function (path) {
-  const value = get(defaults, path)
-  return (typeof value === 'function') ? value() : value
-}
-
-const cloneSimpleObject = o => typeof o === 'object' && Object.getPrototypeOf(o) === Object.prototype ? {...o} : o
-
-const expandDefaults = obj => map(obj, v => typeof v === 'function' ? v() : cloneSimpleObject(v))
-
 export const cal = {
   represent (args = expandDefaults(defaults.represent)) {
     const {
@@ -37,17 +20,27 @@ export const cal = {
       date,
       ...parts
     }
+  },
+
+  DateAdapter: Date,
+
+  DayOfWeek: {
+    Sunday: 0,
+    Monday: 1,
+    Tuesday: 2,
+    Wednesday: 3,
+    Thursday: 4,
+    Friday: 5,
+    Saturday: 6
   }
 }
-cal.DateAdapter = Date
-cal.DayOfWeek = {
-  Sunday: 0,
-  Monday: 1,
-  Tuesday: 2,
-  Wednesday: 3,
-  Thursday: 4,
-  Friday: 5,
-  Saturday: 6
+
+const defaults = {
+  represent: {
+    unit: 'month',
+    date: () => new cal.DateAdapter(),
+    startingDayOfWeek: cal.DayOfWeek.Sunday
+  }
 }
 
 const representUnit = function (args) {
@@ -70,7 +63,7 @@ const representMonth = function (args) {
   const firstOfMonth = new cal.DateAdapter(date.valueOf())
   firstOfMonth.setUTCDate(1)
   const firstDayOfWeek = firstOfMonth.getUTCDay()
-  const numberOfDays = getDaysInMonth(1 + date.getUTCMonth())
+  const numberOfDays = getDaysInMonth(1 + date.getUTCMonth(), date.getUTCFullYear())
   const prependAdjustment = firstDayOfWeek > startingDayOfWeek ? 0 : 7
   const prepend = (new Array(prependAdjustment + firstDayOfWeek - startingDayOfWeek))
     .fill(null)
@@ -120,6 +113,15 @@ const commonDaysInMonth = [
 const getDaysInMonth = (month, year) => (month === 2 && isLeapYear(year) ? 1 : 0) + commonDaysInMonth[month - 1]
 
 const isLeapYear = year => year !== 0 && year % 4 === 0
+
+const getDefault = function (path) {
+  const value = get(defaults, path)
+  return (typeof value === 'function') ? value() : value
+}
+
+const cloneSimpleObject = o => typeof o === 'object' && Object.getPrototypeOf(o) === Object.prototype ? {...o} : o
+
+const expandDefaults = obj => map(obj, v => typeof v === 'function' ? v() : cloneSimpleObject(v))
 
 module.exports.cal = cal
 export default cal
