@@ -1,11 +1,8 @@
-import { get } from './get'
-import { map } from './map'
-
 export const cal = {
   represent (args = expandDefaults(defaults.represent)) {
     const {
-      unit = getDefault('represent.unit'),
-      date = getDefault('represent.date'),
+      unit = getDefault('unit', defaults.represent),
+      date = getDefault('date', defaults.represent),
       ...remainingArgs
     } = args
 
@@ -57,7 +54,7 @@ const representUnit = function (args) {
 const representMonth = function (args) {
   const {
     date,
-    startingDayOfWeek = getDefault('represent.startingDayOfWeek')
+    startingDayOfWeek = getDefault('startingDayOfWeek', defaults.represent)
   } = args
 
   const firstOfMonth = new cal.DateAdapter(date.valueOf())
@@ -114,14 +111,19 @@ const getDaysInMonth = (month, year) => (month === 2 && isLeapYear(year) ? 1 : 0
 
 const isLeapYear = year => year !== 0 && year % 4 === 0
 
-const getDefault = function (path) {
-  const value = get(defaults, path)
+const getDefault = function (path, container) {
+  const value = container[path]
   return (typeof value === 'function') ? value() : value
 }
 
-const cloneSimpleObject = o => typeof o === 'object' && Object.getPrototypeOf(o) === Object.prototype ? {...o} : o
-
-const expandDefaults = obj => map(obj, v => typeof v === 'function' ? v() : cloneSimpleObject(v))
+const expandDefaults = function (obj) {
+  const o = {}
+  for (const k in obj) {
+    const v = obj[k]
+    o[k] = typeof v === 'function' ? v() : v
+  }
+  return o
+}
 
 module.exports.cal = cal
 export default cal
