@@ -37,14 +37,14 @@ describe('cal', () => {
         })
 
         it('should default to the current date with no other arguments', () => {
-          const DateAdapter = class {}
+          const DateAdapter = class extends Date {}
           cal.DateAdapter = DateAdapter
           const rep = cal.represent()
           expect(rep.date).toBeInstanceOf(DateAdapter)
         })
 
         it('should default to the current date with other arguments', () => {
-          const DateAdapter = class {}
+          const DateAdapter = class extends Date {}
           cal.DateAdapter = DateAdapter
           const rep = cal.represent({foo: 'bar'})
           expect(rep.date).toBeInstanceOf(DateAdapter)
@@ -55,9 +55,10 @@ describe('cal', () => {
     describe('unit: month', () => {
       describe('default start of week', () => {
         it('should return the days in the month, starting with Sunday', () => {
-          const date = new Date(2020, 1, 1)
+          const date = new Date(Date.UTC(2020, 0, 1))
           const rep = cal.represent({unit: 'month', date })
           expect(rep.month).toBeInstanceOf(Object)
+          expect(rep.month.numberOfDays).toBe(31)
           expect(rep.month.weeks).toBeInstanceOf(Array)
           expect(rep.month.weeks.length).toBe(5)
           expect(rep.month.weeks[0].length).toBe(7)

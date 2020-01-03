@@ -4,7 +4,8 @@ import { map } from './map'
 const defaults = {
   represent: {
     unit: 'month',
-    date: () => new cal.DateAdapter()
+    date: () => new cal.DateAdapter(),
+    startOfWeek: 0
   }
 }
 
@@ -21,10 +22,15 @@ export const cal = {
   represent (args = expandDefaults(defaults.represent)) {
     const {
       unit = getDefault('represent.unit'),
-      date = getDefault('represent.date')
+      date = getDefault('represent.date'),
+      ...remainingArgs
     } = args
 
-    const parts = representUnit(args)
+    const parts = representUnit({
+      unit,
+      date,
+      ...remainingArgs
+    })
 
     return {
       unit,
@@ -47,8 +53,23 @@ const representUnit = function (args) {
 }
 
 const representMonth = function (args) {
+  const {
+    date,
+    startOfWeek = getDefault('represent.startOfWeek')
+  } = args
+
+  const firstOfMonth = new cal.DateAdapter(date.valueOf())
+  firstOfMonth.setUTCDate(1)
+  const firstOfMonthWeekday = firstOfMonth.getUTCDay()
+  const numberOfDays = getDaysInMonth(1 + date.getUTCMonth())
+  const days = (new Array(numberOfDays))
+    .fill(1)
+    .map((value, index) => value + index)
+
+
   return {
     month: {
+      numberOfDays,
       weeks: [
         [null, null, null, 1, 2, 3, 4],
         [5, 6, 7, 8, 9, 10, 11],
@@ -59,6 +80,24 @@ const representMonth = function (args) {
     }
   }
 }
+
+const commonDaysInMonth = [
+  31,
+  28,
+  31,
+  30,
+  31,
+  30,
+  31,
+  31,
+  30,
+  31,
+  30,
+  31
+]
+const getDaysInMonth = (month, year) => (month === 2 && isLeapYear(year) ? 1 : 0) + commonDaysInMonth[month - 1]
+
+const isLeapYear = year => year !== 0 && year % 4 === 0
 
 module.exports.cal = cal
 export default cal
