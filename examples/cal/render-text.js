@@ -1,4 +1,4 @@
-import { cal } from '../src/cal'
+import { cal } from '../../src/cal'
 
 const monthNames = [
   'January',
