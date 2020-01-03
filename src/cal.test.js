@@ -52,9 +52,9 @@ describe('cal', () => {
       })
     })
 
-    describe('unit: month', () => {
-      describe('default start of week', () => {
-        it('should return the days in the month, starting with Sunday', () => {
+    describe('unit: month, date: 1/2020', () => {
+      describe('default starting day of week (Sunday)', () => {
+        it.only('should return the days in the month, starting with Sunday', () => {
           const date = new Date(Date.UTC(2020, 0, 1))
           const rep = cal.represent({unit: 'month', date })
           expect(rep.month).toBeInstanceOf(Object)
@@ -71,6 +71,49 @@ describe('cal', () => {
           expect(rep.month.weeks[2]).toEqual([12, 13, 14, 15, 16, 17, 18])
           expect(rep.month.weeks[3]).toEqual([19, 20, 21, 22, 23, 24, 25])
           expect(rep.month.weeks[4]).toEqual([26, 27, 28, 29, 30, 31, null])
+        })
+      })
+      describe('custom starting day of week', () => {
+        describe('Tuesday', () => {
+          it.only('should return the days in the month, starting with Tuesday', () => {
+            const date = new Date(Date.UTC(2020, 0, 1))
+            const rep = cal.represent({unit: 'month', date, startingDayOfWeek: cal.DayOfWeek.Tuesday })
+            expect(rep.month).toBeInstanceOf(Object)
+            expect(rep.month.numberOfDays).toBe(31)
+            expect(rep.month.weeks).toBeInstanceOf(Array)
+            expect(rep.month.weeks.length).toBe(5)
+            expect(rep.month.weeks[0].length).toBe(7)
+            expect(rep.month.weeks[1].length).toBe(7)
+            expect(rep.month.weeks[2].length).toBe(7)
+            expect(rep.month.weeks[3].length).toBe(7)
+            expect(rep.month.weeks[4].length).toBe(7)
+            expect(rep.month.weeks[0]).toEqual([null, 1, 2, 3, 4, 5, 6])
+            expect(rep.month.weeks[1]).toEqual([7, 8, 9, 10, 11, 12, 13])
+            expect(rep.month.weeks[2]).toEqual([14, 15, 16, 17, 18, 19, 20])
+            expect(rep.month.weeks[3]).toEqual([21, 22, 23, 24, 25, 26, 27])
+            expect(rep.month.weeks[4]).toEqual([28, 29, 30, 31, null, null, null])
+          })
+        })
+        describe('Thursday', () => {
+          it.only('should return the days in the month, starting with Thursday', () => {
+            const date = new Date(Date.UTC(2020, 0, 1))
+            const rep = cal.represent({unit: 'month', date, startingDayOfWeek: cal.DayOfWeek.Thursday })
+            expect(rep.month).toBeInstanceOf(Object)
+            expect(rep.month.numberOfDays).toBe(31)
+            expect(rep.month.weeks).toBeInstanceOf(Array)
+            expect(rep.month.weeks.length).toBe(6)
+            expect(rep.month.weeks[0].length).toBe(7)
+            expect(rep.month.weeks[1].length).toBe(7)
+            expect(rep.month.weeks[2].length).toBe(7)
+            expect(rep.month.weeks[3].length).toBe(7)
+            expect(rep.month.weeks[4].length).toBe(7)
+            expect(rep.month.weeks[0]).toEqual([null, null, null, null, null, null, 1])
+            expect(rep.month.weeks[1]).toEqual([2, 3, 4, 5, 6, 7, 8, 9])
+            expect(rep.month.weeks[2]).toEqual([10, 11, 12, 13, 14, 15, 16])
+            expect(rep.month.weeks[3]).toEqual([17, 18, 19, 20, 21, 22, 23])
+            expect(rep.month.weeks[4]).toEqual([24, 25, 26, 27, 28, 29, 30])
+            expect(rep.month.weeks[5]).toEqual([31, null, null, null, null, null, null])
+          })
         })
       })
     })

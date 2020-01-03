@@ -5,7 +5,7 @@ const defaults = {
   represent: {
     unit: 'month',
     date: () => new cal.DateAdapter(),
-    startOfWeek: 0
+    startingDayOfWeek: 0
   }
 }
 
@@ -40,6 +40,15 @@ export const cal = {
   }
 }
 cal.DateAdapter = Date
+cal.DayOfWeek = {
+  Sunday: 0,
+  Monday: 1,
+  Tuesday: 2,
+  Wednesday: 3,
+  Thursday: 4,
+  Friday: 5,
+  Saturday: 6
+}
 
 const representUnit = function (args) {
   const {
@@ -55,7 +64,7 @@ const representUnit = function (args) {
 const representMonth = function (args) {
   const {
     date,
-    startOfWeek = getDefault('represent.startOfWeek')
+    startingDayOfWeek = getDefault('represent.startingDayOfWeek')
   } = args
 
   const firstOfMonth = new cal.DateAdapter(date.valueOf())
@@ -66,7 +75,7 @@ const representMonth = function (args) {
     .fill(1)
     .map((value, index) => value + index)
 
-
+  startingDayOfWeek//?
   return {
     month: {
       numberOfDays,
