@@ -69,23 +69,36 @@ const representMonth = function (args) {
 
   const firstOfMonth = new cal.DateAdapter(date.valueOf())
   firstOfMonth.setUTCDate(1)
-  const firstOfMonthWeekday = firstOfMonth.getUTCDay()
+  const firstDayOfWeek = firstOfMonth.getUTCDay()
   const numberOfDays = getDaysInMonth(1 + date.getUTCMonth())
+  const prependAdjustment = firstDayOfWeek > startingDayOfWeek ? 0 : 7
+  const prepend = (new Array(prependAdjustment + firstDayOfWeek - startingDayOfWeek))
+    .fill(null)
+  const append = (new Array((7 - (prepend.length + numberOfDays) % 7) % 7))
+    .fill(null)
   const days = (new Array(numberOfDays))
     .fill(1)
     .map((value, index) => value + index)
+  const weeks = prepend
+    .concat(days, append)
+    .reduce(
+      (container, value) => {
+        const last = container[container.length - 1]
+        const needNewWeek = !last || last.length === 7
+        const current = !needNewWeek ? last : []
+        if (needNewWeek) {
+          container.push(current)
+        }
+        current.push(value)
+        return container
+      },
+      []
+    )
 
-  startingDayOfWeek//?
   return {
     month: {
       numberOfDays,
-      weeks: [
-        [null, null, null, 1, 2, 3, 4],
-        [5, 6, 7, 8, 9, 10, 11],
-        [12, 13, 14, 15, 16, 17, 18],
-        [19, 20, 21, 22, 23, 24, 25],
-        [26, 27, 28, 29, 30, 31, null]
-      ]
+      weeks
     }
   }
 }
