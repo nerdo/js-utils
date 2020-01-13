@@ -58,9 +58,9 @@ const representMonth = function (args) {
   } = args
 
   const firstOfMonth = new cal.DateAdapter(date.valueOf())
-  firstOfMonth.setUTCDate(1)
-  const firstDayOfWeek = firstOfMonth.getUTCDay()
-  const numberOfDays = getDaysInMonth(1 + date.getUTCMonth(), date.getUTCFullYear())
+  firstOfMonth.setDate(1)
+  const firstDayOfWeek = firstOfMonth.getDay()
+  const numberOfDays = getDaysInMonth(1 + date.getMonth(), date.getFullYear())
   const prependAdjustment = firstDayOfWeek > startingDayOfWeek ? 0 : 7
   const prepend = (new Array(prependAdjustment + firstDayOfWeek - startingDayOfWeek))
     .fill(null)

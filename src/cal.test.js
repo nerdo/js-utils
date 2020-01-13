@@ -53,7 +53,7 @@ describe('cal', () => {
     })
 
     describe('unit: month, date: 1/9/2020', () => {
-      const date = new Date(Date.UTC(2020, 0, 9))
+      const date = new Date(2020, 0, 9)
 
       describe('default starting day of week (Sunday)', () => {
         it('should return the days in the month, starting with Sunday', () => {
@@ -141,7 +141,7 @@ describe('cal', () => {
     })
 
     describe('unit: month, date: 2/3/2020 (February, leap year)', () => {
-      const date = new Date(Date.UTC(2020, 1, 3))
+      const date = new Date(2020, 1, 3)
 
       it('should return the days in the month, starting with Sunday', () => {
         const rep = cal.represent({unit: 'month', date })
@@ -163,7 +163,7 @@ describe('cal', () => {
     })
 
     describe('unit: month, date: 2/17/2019 (February, NON leap year)', () => {
-      const date = new Date(Date.UTC(2019, 1, 17))
+      const date = new Date(2019, 1, 17)
 
       it('should return the days in the month, starting with Sunday', () => {
         const rep = cal.represent({unit: 'month', date })

@@ -100,10 +100,8 @@ Properties:
 > Generates an object representation of a calendar date.
 
 * `unit` _{string}_ **['month']**: the unit of time you want to represent. Currently, only 'month' is supported.
-* `date` _{cal.DateAdapter}_ **[new cal.DateAdapter()]**: the **UTC** date to be represented.
+* `date` _{cal.DateAdapter}_ **[new cal.DateAdapter()]**: the date to be represented.
 * `startingDayOfWeek` _{cal.DayOfWeek}_ **[cal.DayOfWeek.Sunday]**: the starting day of the week.
-
-`date` should be provided in **UTC**. All date mainpulation is internally done in UTC.
 
 `cal(...)` returns an object with the following structure:
 
@@ -135,13 +133,17 @@ const cellSize = 4
 const calWidth = 7 * cellSize + 8
 monthNames.forEach(function (monthName, index) {
   const label = `${monthName} ${year}`
-  console.log(`${' '.repeat((calWidth - label.length) / 2)}${label}`)
-  const representation = cal.represent({date: new Date(Date.UTC(year, index))})
+  console.log(`${' '.repeat((calWidth - label.length) / 2)}${label}`) // centers the label over the calendar
+  const representation = cal.represent({date: new Date(year, index)})
   const renderData = [['S', 'M', 'T', 'W', 'T', 'F', 'S']]
   renderData
     .concat(representation.month.weeks)
-    .map(week => week.map(day => ('' + (day || '')).padStart(cellSize, ' ')).join(' '))
-    .forEach(string => console.log(string))
+    .map(week => week
+      .map(day => '' + (day || '')) // coerce each day to a string
+      .map(stringDay => stringDay.padStart(cellSize, ' '))
+      .join(' ')
+    )
+    .forEach(weekString => console.log(weekString))
 })
 ```
 
