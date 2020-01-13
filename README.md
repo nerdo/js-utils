@@ -8,6 +8,7 @@ npm install @nerdo/utils --save
 ```
 
 ### map(object, mapper)
+`import { map } from '@nerdo/utils'`
 > A recursive mapping function for objects.
 
 * `object` _{object}_: the object to map.
@@ -65,6 +66,7 @@ console.log(obj) // {foo: {removeMe: false }}
 Although both `foo.bar` and `foo.bar.ignored` have been removed by the mapper, the console logs confirm that the mapper never actually iterated on `foo.bar.ignored`. It was removed because it was a property of `foo.bar`, which was removed.
 
 ### get(object, path, [defaultValue = _undefined_])
+`import { get } from '@nerdo/utils'`
 > Returns the value in an object at the location specified by path.
 
 * `object` _{object}_: the object to query.
@@ -82,34 +84,22 @@ get(object, ['a', 0, 'b', 'c']) // 3
 get(object, 'a.b.c', 555) // 5
 ```
 
-## cal
-> A calendar representation module.
+### representMonth({ date, startingDayOfWeek })
+`import { representMonth } from '@nerdo/utils'`
+> Generates an object representation of a calendar date.
 
-Usage:
-
-```js
-import { cal } from '@nerdo/utils'
-```
+* `date` _{representMonth.DateAdapter}_ **[new representMonth.DateAdapter()]**: the date to be represented.
+* `startingDayOfWeek` _{representMonth.DayOfWeek}_ **[representMonth.DayOfWeek.Sunday]**: the starting day of the week.
 
 Properties:
 
 * `DateAdapter` _{Date}_: a constructor that is compatible with the JavaScript `Date` object.
-* `DayOfWeek` _{object}_: an object with constants for Sunday through Saturday.
 
-### cal.represent({ unit, date, startingDayOfWeek })
-> Generates an object representation of a calendar date.
+`representMonth(...)` returns an object with the following structure:
 
-* `unit` _{string}_ **['month']**: the unit of time you want to represent. Currently, only 'month' is supported.
-* `date` _{cal.DateAdapter}_ **[new cal.DateAdapter()]**: the date to be represented.
-* `startingDayOfWeek` _{cal.DayOfWeek}_ **[cal.DayOfWeek.Sunday]**: the starting day of the week.
-
-`cal(...)` returns an object with the following structure:
-
-* `unit` _{string}_: the unit being represented.
-* `date` _{cal.DateAdapter}_: the `cal.DateAdapter` instance of the date being represented.
-* `month` _{object}_: when `unit` is 'month', an object containing...
-  * `numberOfDays` _{number}_: the number of days in the month
-  * `weeks` _{array}_: the list of days in each week (i.e. 1 through 31 depending on the month). Each week array will always represent each of the 7 days and the first index of the week corresponds to the `startingDayOfWeek` argument. If the value is `null`, that particular day does not exist in the month. This is visually equivalent to when there are blank spaces in a calendar in the first and last weeks of a month that overlap with the previous month.
+* `date` _{representMonth.DateAdapter}_: the `representMonth.DateAdapter` instance of the date being represented.
+* `numberOfDays` _{number}_: the number of days in the month
+* `weeks` _{array}_: the list of days in each week (i.e. 1 through 31 depending on the month). Each week array will always represent each of the 7 days and the first index of the week corresponds to the `startingDayOfWeek` argument. If a value is `null`, that particular day does not exist in the month. This is visually equivalent to when there are blank spaces in a calendar in the first and last weeks of a month that overlap with the previous month.
 
 A typical usage of this is to render calendars. For example:
 
@@ -134,10 +124,10 @@ const calWidth = 7 * cellSize + 8
 monthNames.forEach(function (monthName, index) {
   const label = `${monthName} ${year}`
   console.log(`${' '.repeat((calWidth - label.length) / 2)}${label}`) // centers the label over the calendar
-  const representation = cal.represent({date: new Date(year, index)})
+  const representation = representMonth({date: new Date(year, index)})
   const renderData = [['S', 'M', 'T', 'W', 'T', 'F', 'S']]
   renderData
-    .concat(representation.month.weeks)
+    .concat(representation.weeks)
     .map(week => week
       .map(day => '' + (day || '')) // coerce each day to a string
       .map(stringDay => stringDay.padStart(cellSize, ' '))
@@ -148,3 +138,15 @@ monthNames.forEach(function (monthName, index) {
 ```
 
 The preceeding code results in console logging of each month of the 2020 calendar year.
+
+### DayOfWeek
+`import { DayOfWeek } from '@nerdo/utils'`
+> An object representing the days of the week for use in representMonth().
+
+Properties:
+* `Sunday`
+* `Monday`
+* `Tuesday`
+* `Wednesday`
+* `Thursday`
+* `Saturday`

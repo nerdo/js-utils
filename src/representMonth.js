@@ -1,63 +1,10 @@
-export const cal = {
-  represent (args = expandDefaults(defaults.represent)) {
-    const {
-      unit = getDefault('unit', defaults.represent),
-      date = getDefault('date', defaults.represent),
-      ...remainingArgs
-    } = args
-
-    const parts = representUnit({
-      unit,
-      date,
-      ...remainingArgs
-    })
-
-    return {
-      unit,
-      date,
-      ...parts
-    }
-  },
-
-  DateAdapter: Date,
-
-  DayOfWeek: {
-    Sunday: 0,
-    Monday: 1,
-    Tuesday: 2,
-    Wednesday: 3,
-    Thursday: 4,
-    Friday: 5,
-    Saturday: 6
-  }
-}
-
-const defaults = {
-  represent: {
-    unit: 'month',
-    date: () => new cal.DateAdapter(),
-    startingDayOfWeek: cal.DayOfWeek.Sunday
-  }
-}
-
-const representUnit = function (args) {
+export const representMonth = function (args = expandDefaults(defaults.represent)) {
   const {
-    unit,
-    ...unitArgs
-  } = args
-
-  if (unit === 'month') {
-    return representMonth(unitArgs)
-  }
-}
-
-const representMonth = function (args) {
-  const {
-    date,
+    date = getDefault('date', defaults.represent),
     startingDayOfWeek = getDefault('startingDayOfWeek', defaults.represent)
   } = args
 
-  const firstOfMonth = new cal.DateAdapter(date.valueOf())
+  const firstOfMonth = new representMonth.DateAdapter(date.valueOf())
   firstOfMonth.setDate(1)
   const firstDayOfWeek = firstOfMonth.getDay()
   const numberOfDays = getDaysInMonth(1 + date.getMonth(), date.getFullYear())
@@ -86,10 +33,18 @@ const representMonth = function (args) {
     )
 
   return {
-    month: {
-      numberOfDays,
-      weeks
-    }
+    date,
+    numberOfDays,
+    weeks
+  }
+}
+representMonth.DateAdapter = Date
+
+const defaults = {
+  represent: {
+    unit: 'month',
+    date: () => new representMonth.DateAdapter(),
+    startingDayOfWeek: 0
   }
 }
 
@@ -125,5 +80,5 @@ const expandDefaults = function (obj) {
   return o
 }
 
-module.exports.cal = cal
-export default cal
+module.exports.representMonth = representMonth
+export default representMonth
