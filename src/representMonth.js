@@ -1,7 +1,12 @@
-export const representMonth = function (args = expandDefaults(defaults.represent)) {
+const defaults = {
+  date: () => new representMonth.DateAdapter(),
+  startingDayOfWeek: 0
+}
+
+export const representMonth = function (args = expandDefaults(defaults)) {
   const {
-    date = getDefault('date', defaults.represent),
-    startingDayOfWeek = getDefault('startingDayOfWeek', defaults.represent)
+    date = getDefault('date', defaults),
+    startingDayOfWeek = getDefault('startingDayOfWeek', defaults)
   } = args
 
   const firstOfMonth = new representMonth.DateAdapter(date.valueOf())
@@ -39,14 +44,6 @@ export const representMonth = function (args = expandDefaults(defaults.represent
   }
 }
 representMonth.DateAdapter = Date
-
-const defaults = {
-  represent: {
-    unit: 'month',
-    date: () => new representMonth.DateAdapter(),
-    startingDayOfWeek: 0
-  }
-}
 
 const commonDaysInMonth = [
   31,
