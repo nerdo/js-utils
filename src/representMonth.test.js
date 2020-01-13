@@ -30,7 +30,7 @@ describe('representMonth', () => {
     })
   })
 
-  describe('date: 1/9/2020', () => {
+  describe('general case, date: 1/9/2020', () => {
     const date = new Date(2020, 0, 9)
 
     describe('default starting day of week (Sunday)', () => {
@@ -114,45 +114,69 @@ describe('representMonth', () => {
     })
   })
 
-  describe('date: 2/3/2020 (February, leap year)', () => {
-    const date = new Date(2020, 1, 3)
+  describe('edge cases', () => {
+    describe('date: 2/3/2020 (February, leap year)', () => {
+      const date = new Date(2020, 1, 3)
 
-    it('should return the days in the month, starting with Sunday', () => {
-      const rep = representMonth({ date })
-      expect(rep.numberOfDays).toBe(29)
-      expect(rep.weeks).toBeInstanceOf(Array)
-      expect(rep.weeks.length).toBe(5)
-      expect(rep.weeks[0].length).toBe(7)
-      expect(rep.weeks[1].length).toBe(7)
-      expect(rep.weeks[2].length).toBe(7)
-      expect(rep.weeks[3].length).toBe(7)
-      expect(rep.weeks[4].length).toBe(7)
-      expect(rep.weeks[0]).toEqual([null, null, null, null, null, null, 1])
-      expect(rep.weeks[1]).toEqual([2, 3, 4, 5, 6, 7, 8])
-      expect(rep.weeks[2]).toEqual([9, 10, 11, 12, 13, 14, 15])
-      expect(rep.weeks[3]).toEqual([16, 17, 18, 19, 20, 21, 22])
-      expect(rep.weeks[4]).toEqual([23, 24, 25, 26, 27, 28, 29])
+      it('should return the days in the month, starting with Sunday', () => {
+        const rep = representMonth({ date })
+        expect(rep.numberOfDays).toBe(29)
+        expect(rep.weeks).toBeInstanceOf(Array)
+        expect(rep.weeks.length).toBe(5)
+        expect(rep.weeks[0].length).toBe(7)
+        expect(rep.weeks[1].length).toBe(7)
+        expect(rep.weeks[2].length).toBe(7)
+        expect(rep.weeks[3].length).toBe(7)
+        expect(rep.weeks[4].length).toBe(7)
+        expect(rep.weeks[0]).toEqual([null, null, null, null, null, null, 1])
+        expect(rep.weeks[1]).toEqual([2, 3, 4, 5, 6, 7, 8])
+        expect(rep.weeks[2]).toEqual([9, 10, 11, 12, 13, 14, 15])
+        expect(rep.weeks[3]).toEqual([16, 17, 18, 19, 20, 21, 22])
+        expect(rep.weeks[4]).toEqual([23, 24, 25, 26, 27, 28, 29])
+      })
     })
-  })
 
-  describe('date: 2/17/2019 (February, NON leap year)', () => {
-    const date = new Date(2019, 1, 17)
+    describe('date: 2/17/2019 (February, NON leap year)', () => {
+      const date = new Date(2019, 1, 17)
 
-    it('should return the days in the month, starting with Sunday', () => {
-      const rep = representMonth({ date })
-      expect(rep.numberOfDays).toBe(28)
-      expect(rep.weeks).toBeInstanceOf(Array)
-      expect(rep.weeks.length).toBe(5)
-      expect(rep.weeks[0].length).toBe(7)
-      expect(rep.weeks[1].length).toBe(7)
-      expect(rep.weeks[2].length).toBe(7)
-      expect(rep.weeks[3].length).toBe(7)
-      expect(rep.weeks[4].length).toBe(7)
-      expect(rep.weeks[0]).toEqual([null, null, null, null, null, 1, 2])
-      expect(rep.weeks[1]).toEqual([3, 4, 5, 6, 7, 8, 9])
-      expect(rep.weeks[2]).toEqual([10, 11, 12, 13, 14, 15, 16])
-      expect(rep.weeks[3]).toEqual([17, 18, 19, 20, 21, 22, 23])
-      expect(rep.weeks[4]).toEqual([24, 25, 26, 27, 28, null, null])
+      it('should return the days in the month, starting with Sunday', () => {
+        const rep = representMonth({ date })
+        expect(rep.numberOfDays).toBe(28)
+        expect(rep.weeks).toBeInstanceOf(Array)
+        expect(rep.weeks.length).toBe(5)
+        expect(rep.weeks[0].length).toBe(7)
+        expect(rep.weeks[1].length).toBe(7)
+        expect(rep.weeks[2].length).toBe(7)
+        expect(rep.weeks[3].length).toBe(7)
+        expect(rep.weeks[4].length).toBe(7)
+        expect(rep.weeks[0]).toEqual([null, null, null, null, null, 1, 2])
+        expect(rep.weeks[1]).toEqual([3, 4, 5, 6, 7, 8, 9])
+        expect(rep.weeks[2]).toEqual([10, 11, 12, 13, 14, 15, 16])
+        expect(rep.weeks[3]).toEqual([17, 18, 19, 20, 21, 22, 23])
+        expect(rep.weeks[4]).toEqual([24, 25, 26, 27, 28, null, null])
+      })
+    })
+
+    describe('date: 3/1/2020 (March 2020)', () => {
+      // Checking for all null initial week.
+      const date = new Date(2020, 2, 1)
+
+      it('should return the days in the month, starting with Sunday', () => {
+        const rep = representMonth({ date })
+        expect(rep.numberOfDays).toBe(31)
+        expect(rep.weeks).toBeInstanceOf(Array)
+        expect(rep.weeks.length).toBe(5)
+        expect(rep.weeks[0].length).toBe(7)
+        expect(rep.weeks[1].length).toBe(7)
+        expect(rep.weeks[2].length).toBe(7)
+        expect(rep.weeks[3].length).toBe(7)
+        expect(rep.weeks[4].length).toBe(7)
+        expect(rep.weeks[0]).toEqual([1, 2, 3, 4, 5, 6, 7])
+        expect(rep.weeks[1]).toEqual([8, 9, 10, 11, 12, 13, 14])
+        expect(rep.weeks[2]).toEqual([15, 16, 17, 18, 19, 20, 21])
+        expect(rep.weeks[3]).toEqual([22, 23, 24, 25, 26, 27, 28])
+        expect(rep.weeks[4]).toEqual([29, 30, 31, null, null, null, null])
+      })
     })
   })
 })

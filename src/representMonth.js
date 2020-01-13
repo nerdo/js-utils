@@ -6,10 +6,10 @@ export const representMonth = function (args = expandDefaults(defaults.represent
 
   const firstOfMonth = new representMonth.DateAdapter(date.valueOf())
   firstOfMonth.setDate(1)
-  const firstDayOfWeek = firstOfMonth.getDay()
+  const firstDayOfWeek = firstOfMonth.getDay() //?
   const numberOfDays = getDaysInMonth(1 + date.getMonth(), date.getFullYear())
   const prependAdjustment = firstDayOfWeek > startingDayOfWeek ? 0 : 7
-  const prepend = (new Array(prependAdjustment + firstDayOfWeek - startingDayOfWeek))
+  const prepend = (new Array((prependAdjustment + firstDayOfWeek - startingDayOfWeek) % 7))
     .fill(null)
   const append = (new Array((7 - (prepend.length + numberOfDays) % 7) % 7))
     .fill(null)
