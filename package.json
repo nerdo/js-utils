@@ -2,10 +2,11 @@
   "name": "@nerdo/utils",
   "version": "0.0.1-alpha",
   "description": "nerdo's JavaScript utilities.",
-  "main": "src/index.js",
+  "main": "build/nerdo-utils.js",
   "scripts": {
     "test": "jest",
-    "build": "rollup -c"
+    "build": "rm -rf build/* && rollup -c",
+    "prepublish": "npm run build"
   },
   "author": "Dannel Albert <cuebix@gmail.com>",
   "license": "MIT",
