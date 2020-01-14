@@ -1,6 +1,6 @@
 {
   "name": "@nerdo/utils",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-alpha.2",
   "description": "nerdo's JavaScript utilities.",
   "main": "build/nerdo-utils.js",
   "scripts": {
