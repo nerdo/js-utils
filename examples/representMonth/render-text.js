@@ -20,7 +20,7 @@ const calWidth = 7 * cellSize + 8
 monthNames.forEach(function (monthName, index) {
   const label = `${monthName} ${year}`
   console.log(`${' '.repeat((calWidth - label.length) / 2)}${label}`) // centers the label over the calendar
-  const representation = representMonth({date: new Date(year, index)})
+  const representation = representMonth({date: new Date(year, index)}) //?
   const renderData = [['S', 'M', 'T', 'W', 'T', 'F', 'S']]
   renderData
     .concat(representation.weeks)
