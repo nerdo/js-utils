@@ -24,6 +24,7 @@ describe('representMonth', () => {
       it('should default to the current date with other arguments', () => {
         const DateAdapter = class extends Date {}
         representMonth.DateAdapter = DateAdapter
+        // @ts-ignore
         const rep = representMonth({foo: 'bar'})
         expect(rep.date).toBeInstanceOf(DateAdapter)
       })

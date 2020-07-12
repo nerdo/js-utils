@@ -1,4 +1,8 @@
-const recursiveMap = function (obj, mapper, meta) {
+interface Mapper {
+  (value: unknown, obj: object, path?: Array<string>): unknown
+}
+
+const recursiveMap = function (obj: object, mapper: Mapper, meta): object {
   if (typeof obj !== 'object') {
     return obj
   }
@@ -14,7 +18,7 @@ const recursiveMap = function (obj, mapper, meta) {
   return obj
 }
 
-export const map = function (obj, mapper) {
+export const map = function (obj, mapper: Mapper): object {
   const subject = typeof mapper === 'function' ? mapper(obj, {object: obj, path: []}) : obj
   return recursiveMap(subject, mapper, {root: obj, parentPath: []})
 }

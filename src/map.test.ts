@@ -7,6 +7,7 @@ describe('map', () => {
 
   it('should return the object', () => {
     const obj = {}
+    // @ts-ignore
     const mapped = map(obj)
     expect(mapped).toBe(obj)
   })
@@ -118,6 +119,7 @@ describe('map', () => {
     it('should call the mapper once for each nested object property', () => {
       const mapper = jest.fn(identity)
       const NotPlainObject = class {
+        someProperty?: unknown
         constructor() {
           this.someProperty = 42
         }

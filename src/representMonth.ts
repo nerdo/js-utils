@@ -1,11 +1,44 @@
+import { DayOfWeek } from './DayOfWeek';
+
+interface DateInterface {
+  setDate(dayValue: number)
+  getDay(): number
+}
+
+interface ReferenceDateInterface {
+  valueOf(): number
+  getMonth(): number
+  getFullYear(): number
+}
+
+interface Args {
+  date?: ReferenceDateInterface,
+  startingDayOfWeek?: DayOfWeek
+}
+
+interface DateConstructor {
+  new (unixTimestampMilliseconds?: number): DateInterface
+}
+
+interface Month {
+  date: ReferenceDateInterface
+  numberOfDays: number
+  weeks: Array<Array<number>>
+}
+
+interface RepresentMonthFunction {
+  (args?: Args): Month
+  DateAdapter: DateConstructor
+}
+
 const defaults = {
   date: () => new representMonth.DateAdapter(),
   startingDayOfWeek: 0
 }
 
-export const representMonth = function (args = expandDefaults(defaults)) {
+export const representMonth: RepresentMonthFunction = function (args = <Args> expandDefaults(defaults)) {
   const {
-    date = getDefault('date', defaults),
+    date = <ReferenceDateInterface> getDefault('date', defaults),
     startingDayOfWeek = getDefault('startingDayOfWeek', defaults)
   } = args
 

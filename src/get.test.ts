@@ -6,11 +6,13 @@ describe('get', () => {
   })
 
   it('should return undefined when given no arguments', () => {
+    // @ts-ignore
     expect(get()).toBeUndefined()
   })
 
   it('should return the object when given no path', () => {
     const obj = {}
+    // @ts-ignore
     expect(get(obj)).toBe(obj)
   })
 
