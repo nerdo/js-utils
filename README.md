@@ -65,6 +65,28 @@ console.log(obj) // {foo: {removeMe: false }}
 
 Although both `foo.bar` and `foo.bar.ignored` have been removed by the mapper, the console logs confirm that the mapper never actually iterated on `foo.bar.ignored`. It was removed because it was a property of `foo.bar`, which was removed.
 
+### clone(object)
+`import { clone } from '@nerdo/utils'`
+> Returns a deep clone of the specified object
+
+* `object` _{object}_: the object to clone.
+
+`clone(...)` returns the deep cloned object
+
+```js
+const obj = {
+  a: [
+    9,
+    {
+      foo: 'bar'
+    },
+    7
+  ]
+}
+const cloned = clone(obj)
+console.log(cloned) // a deep clone of obj
+```
+
 ### get(object, path, [defaultValue = _undefined_])
 `import { get } from '@nerdo/utils'`
 > Returns the value in an object at the location specified by path.

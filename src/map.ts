@@ -2,12 +2,12 @@ interface Mapper {
   (value: unknown, obj: object, path?: Array<string>): unknown
 }
 
-const recursiveMap = function (obj: object, mapper: Mapper, meta): object {
+const recursiveMap = <T>(obj: T, mapper: Mapper, meta): any => {
   if (typeof obj !== 'object') {
     return obj
   }
 
-  for (const key in obj) {
+  for (const key in obj as unknown as object) {
     obj[key] = mapper(obj[key], {object: meta.root, path: [].concat(meta.parentPath, key)})
     const current = obj[key]
     if (typeof current === 'object' && !Array.isArray(current)) {
@@ -18,7 +18,7 @@ const recursiveMap = function (obj: object, mapper: Mapper, meta): object {
   return obj
 }
 
-export const map = function (obj, mapper: Mapper): object {
+export const map = <I, O>(obj: I, mapper: Mapper): O => {
   const subject = typeof mapper === 'function' ? mapper(obj, {object: obj, path: []}) : obj
   return recursiveMap(subject, mapper, {root: obj, parentPath: []})
 }

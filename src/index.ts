@@ -1,4 +1,5 @@
 export { map } from './map'
+export { clone } from './clone'
 export { get } from './get'
 export { representMonth } from './representMonth'
 export { DayOfWeek } from './DayOfWeek'
