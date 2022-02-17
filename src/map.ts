@@ -2,7 +2,12 @@ interface Mapper {
   (value: unknown, obj: object, path?: Array<string>): unknown
 }
 
-const recursiveMap = <T>(obj: T, mapper: Mapper, meta): any => {
+interface Meta {
+  root: any,
+  parentPath: string[]
+}
+
+const recursiveMap = <T>(obj: T, mapper: Mapper, meta: Meta): any => {
   if (typeof obj !== 'object') {
     return obj
   }
@@ -23,5 +28,4 @@ export const map = <I, O>(obj: I, mapper: Mapper): O => {
   return recursiveMap(subject, mapper, {root: obj, parentPath: []})
 }
 
-module.exports.map = map
 export default map

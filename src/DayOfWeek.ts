@@ -8,5 +8,4 @@ export enum DayOfWeek {
   Saturday = 6
 }
 
-module.exports.DayOfWeek = DayOfWeek
 export default DayOfWeek

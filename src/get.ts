@@ -5,5 +5,5 @@ export const get = function (obj: object, path: string | Array<string>, defaultV
     obj
   )
 }
-module.exports.get = get
+
 export default get

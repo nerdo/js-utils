@@ -1,8 +1,8 @@
 import { DayOfWeek } from './DayOfWeek';
 
 interface DateInterface {
-  setDate(dayValue: number)
-  getDay(): number
+  setDate: (dayValue: number) => void
+  getDay: () => number
 }
 
 interface ReferenceDateInterface {
@@ -92,16 +92,16 @@ const commonDaysInMonth = [
   30,
   31
 ]
-const getDaysInMonth = (month, year) => (month === 2 && isLeapYear(year) ? 1 : 0) + commonDaysInMonth[month - 1]
+const getDaysInMonth = (month: number, year: number) => (month === 2 && isLeapYear(year) ? 1 : 0) + commonDaysInMonth[month - 1]
 
-const isLeapYear = year => year !== 0 && year % 4 === 0
+const isLeapYear = (year: number) => year !== 0 && year % 4 === 0
 
-const getDefault = function (path, container) {
+const getDefault = <Container extends Object>(path: keyof Container, container: Container) => {
   const value = container[path]
   return (typeof value === 'function') ? value() : value
 }
 
-const expandDefaults = function (obj) {
+const expandDefaults = (obj: Object) => {
   const o = {}
   for (const k in obj) {
     const v = obj[k]
@@ -110,5 +110,4 @@ const expandDefaults = function (obj) {
   return o
 }
 
-module.exports.representMonth = representMonth
 export default representMonth
