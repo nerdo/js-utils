@@ -1,33 +1,33 @@
 import { DayOfWeek } from './DayOfWeek';
 
-interface DateInterface {
+export interface DateInterface {
   setDate: (dayValue: number) => void
   getDay: () => number
 }
 
-interface ReferenceDateInterface {
+export interface ReferenceDateInterface {
   valueOf(): number
   getMonth(): number
   getFullYear(): number
 }
 
-interface Args {
+export interface RepresentMonthFunctionArgs {
   date?: ReferenceDateInterface,
   startingDayOfWeek?: DayOfWeek
 }
 
-interface DateConstructor {
+export interface DateConstructor {
   new (unixTimestampMilliseconds?: number): DateInterface
 }
 
-interface Month {
+export interface Month {
   date: ReferenceDateInterface
   numberOfDays: number
   weeks: Array<Array<number>>
 }
 
-interface RepresentMonthFunction {
-  (args?: Args): Month
+export interface RepresentMonthFunction {
+  (args?: RepresentMonthFunctionArgs): Month
   DateAdapter: DateConstructor
 }
 
@@ -36,7 +36,7 @@ const defaults = {
   startingDayOfWeek: 0
 }
 
-export const representMonth: RepresentMonthFunction = function (args = <Args> expandDefaults(defaults)) {
+export const representMonth: RepresentMonthFunction = function (args = <RepresentMonthFunctionArgs> expandDefaults(defaults)) {
   const {
     date = <ReferenceDateInterface> getDefault('date', defaults),
     startingDayOfWeek = getDefault('startingDayOfWeek', defaults)
