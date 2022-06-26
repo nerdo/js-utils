@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { clone } from './clone'
 
 describe('clone', () => {
@@ -11,7 +12,7 @@ describe('clone', () => {
     expect(cloned).not.toBe(obj)
     expect(cloned).toEqual(obj)
   })
-  
+
   it('should return a copy of the object with nesting', () => {
     const obj = {
       a: {
@@ -59,7 +60,7 @@ describe('clone', () => {
     expect(obj.a).not.toBe(cloned.a)
     expect(obj.a[1]).not.toBe(cloned.a[1])
   })
-  
+
   it('should not properly clone objects with circular references', () => {
     // this is a limitation of map that might be solved using Map to keep track of visited objects
     function Foo() {

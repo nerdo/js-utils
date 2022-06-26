@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest'
 import { map } from './map'
 
 describe('map', () => {
@@ -16,54 +17,54 @@ describe('map', () => {
     const identity = v => v
 
     it('should call the mapper on undefined', () => {
-      const mapper = jest.fn(identity)
+      const mapper = vi.fn(identity)
       map(void 0, mapper)
       expect(mapper.mock.calls.length).toBe(1)
     })
 
     it('should call the mapper on an object with no properties', () => {
-      const mapper = jest.fn(identity)
+      const mapper = vi.fn(identity)
       map({}, mapper)
       expect(mapper.mock.calls.length).toBe(1)
     })
 
     it('should not traverse a number property', () => {
-      const mapper = jest.fn(identity)
+      const mapper = vi.fn(identity)
       const obj = { a: 1 }
       map(obj, mapper)
       expect(mapper.mock.calls.length).toBe(2)
     })
 
     it('should not traverse a string property', () => {
-      const mapper = jest.fn(identity)
+      const mapper = vi.fn(identity)
       const obj = { a: '' }
       map(obj, mapper)
       expect(mapper.mock.calls.length).toBe(2)
     })
 
     it('should not traverse a boolean property', () => {
-      const mapper = jest.fn(identity)
+      const mapper = vi.fn(identity)
       const obj = { a: false }
       map(obj, mapper)
       expect(mapper.mock.calls.length).toBe(2)
     })
 
     it('should not traverse a null property', () => {
-      const mapper = jest.fn(identity)
+      const mapper = vi.fn(identity)
       const obj = { a: null }
       map(obj, mapper)
       expect(mapper.mock.calls.length).toBe(2)
     })
 
     it('should not traverse an undefined property', () => {
-      const mapper = jest.fn(identity)
+      const mapper = vi.fn(identity)
       const obj = { a: void 0 }
       map(obj, mapper)
       expect(mapper.mock.calls.length).toBe(2)
     })
 
     it('should not traverse an array', () => {
-      const mapper = jest.fn(identity)
+      const mapper = vi.fn(identity)
       const obj = {
         a: [
           9,
@@ -76,21 +77,21 @@ describe('map', () => {
     })
 
     it('should not traverse a function', () => {
-      const mapper = jest.fn(identity)
+      const mapper = vi.fn(identity)
       const obj = { a: function () {} }
       map(obj, mapper)
       expect(mapper.mock.calls.length).toBe(2)
     })
 
     it('should not traverse symbol nodes', () => {
-      const mapper = jest.fn(identity)
+      const mapper = vi.fn(identity)
       const obj = { [Symbol.for('testing')]: 1 }
       map(obj, mapper)
       expect(mapper.mock.calls.length).toBe(1)
     })
 
     it('should traverse a simple, flat object', () => {
-      const mapper = jest.fn(identity)
+      const mapper = vi.fn(identity)
       const obj = {
         a: 1,
         b: 2,
@@ -101,7 +102,7 @@ describe('map', () => {
     })
 
     it('should traverse a simple, nested object', () => {
-      const mapper = jest.fn(identity)
+      const mapper = vi.fn(identity)
       const obj = {
         a: 1,
         b: {
@@ -117,7 +118,7 @@ describe('map', () => {
     })
 
     it('should call the mapper once for each nested object property', () => {
-      const mapper = jest.fn(identity)
+      const mapper = vi.fn(identity)
       const NotPlainObject = class {
         someProperty?: unknown
         constructor() {
@@ -154,7 +155,7 @@ describe('map', () => {
   describe('mutating mapper', () => {
     it('should not traverse nested properties replaced by mapper', () => {
       const pathsCalled = []
-      const mapper = jest.fn((v, {path}) => {
+      const mapper = vi.fn((v, {path}) => {
         pathsCalled.push(path.join('.'))
         return (typeof v === 'object' && v.remove) ? void 0 : v
       })
