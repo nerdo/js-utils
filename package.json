@@ -23,7 +23,7 @@
     "prepublishOnly": "vitest run && microbundle"
   },
   "devDependencies": {
-    "microbundle": "^0.12.2",
+    "microbundle": "^0.15.0",
     "standard": "^14.3.4",
     "vitest": "^0.16.0"
   }
