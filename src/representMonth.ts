@@ -42,10 +42,21 @@ const defaults = {
   startingDayOfWeek: 0
 }
 
-function* makeCounterGenerator(n: number, offset: number) {
-  while (true) {
-    yield n
-    n += offset
+const makeCounterGenerator = (n: number, offset: number) => {
+  const valueKey = Symbol.for('value')
+
+  return {
+    [valueKey]: void 0,
+    next() {
+      this[valueKey] = this[valueKey] === void 0
+        ? n
+        : this[valueKey] += offset
+
+      return this
+    },
+    get value() {
+      return this[valueKey]
+    }
   }
 }
 
