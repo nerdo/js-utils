@@ -17,13 +17,19 @@ export interface RepresentMonthFunctionArgs {
 }
 
 export interface DateConstructor {
-  new (unixTimestampMilliseconds?: number): DateInterface
+  new(unixTimestampMilliseconds?: number): DateInterface
 }
+
+export type Day = number | null
 
 export interface Month {
   date: ReferenceDateInterface
   numberOfDays: number
-  weeks: Array<Array<number>>
+  weeks: Day[][]
+  prevMonthNumberOfDays: number
+  prevMonthLastWeek: Day[]
+  nextMonthNumberOfDays: number
+  nextMonthFirstWeek: Day[]
 }
 
 export interface RepresentMonthFunction {
@@ -36,16 +42,25 @@ const defaults = {
   startingDayOfWeek: 0
 }
 
-export const representMonth: RepresentMonthFunction = function (args = <RepresentMonthFunctionArgs> expandDefaults(defaults)) {
+function* makeCounterGenerator(n: number, offset: number) {
+  while (true) {
+    yield n
+    n += offset
+  }
+}
+
+export const representMonth: RepresentMonthFunction = (args = <RepresentMonthFunctionArgs>expandFlatDefaults(defaults)) => {
   const {
-    date = <ReferenceDateInterface> getDefault('date', defaults),
+    date = <ReferenceDateInterface>getDefault('date', defaults),
     startingDayOfWeek = getDefault('startingDayOfWeek', defaults)
   } = args
 
   const firstOfMonth = new representMonth.DateAdapter(date.valueOf())
   firstOfMonth.setDate(1)
+  const currentMonthNumber = date.getMonth()
+  const currentYear = date.getFullYear()
   const firstDayOfWeek = firstOfMonth.getDay()
-  const numberOfDays = getDaysInMonth(1 + date.getMonth(), date.getFullYear())
+  const numberOfDays = numDaysInMonth(currentMonthNumber, currentYear)
   const prependAdjustment = firstDayOfWeek > startingDayOfWeek ? 0 : 7
   const prepend = (new Array((prependAdjustment + firstDayOfWeek - startingDayOfWeek) % 7))
     .fill(null)
@@ -54,7 +69,7 @@ export const representMonth: RepresentMonthFunction = function (args = <Represen
   const days = (new Array(numberOfDays))
     .fill(1)
     .map((value, index) => value + index)
-  const weeks = prepend
+  const weeks: (number | null)[][] = prepend
     .concat(days, append)
     .reduce(
       (container, value) => {
@@ -69,11 +84,31 @@ export const representMonth: RepresentMonthFunction = function (args = <Represen
       },
       []
     )
+  const prevMonthNumberOfDays = numDaysInMonth(
+    currentMonthNumber === 0 ? 11 : currentMonthNumber - 1,
+    currentYear - (currentMonthNumber === 0 ? 1 : 0)
+  )
+  const numPrevNulls = weeks[0].filter((n) => n === null).length
+  const prevMonthLastWeek = (new Array(numPrevNulls))
+    .fill(null)
+    .map((_, index) => 1 + prevMonthNumberOfDays - (numPrevNulls - index))
+    .concat((new Array(Math.max(0, 7 - numPrevNulls))).fill(null))
+  const nextMonthNumberOfDays = numDaysInMonth(
+    currentMonthNumber === 11 ? 0 : currentMonthNumber + 1,
+    currentYear + (currentMonthNumber === 11 ? 1 : 0)
+  )
+  const nextMonthGenerator = makeCounterGenerator(1, 1)
+  const nextMonthFirstWeek = [...weeks[weeks.length - 1]]
+    .map((value) => value === null ? nextMonthGenerator.next().value! : null)
 
   return {
     date,
     numberOfDays,
-    weeks
+    weeks,
+    prevMonthNumberOfDays,
+    prevMonthLastWeek,
+    nextMonthNumberOfDays,
+    nextMonthFirstWeek,
   }
 }
 representMonth.DateAdapter = Date
@@ -92,16 +127,23 @@ const commonDaysInMonth = [
   30,
   31
 ]
-const getDaysInMonth = (month: number, year: number) => (month === 2 && isLeapYear(year) ? 1 : 0) + commonDaysInMonth[month - 1]
 
-const isLeapYear = (year: number) => year !== 0 && year % 4 === 0
+/**
+ * Gets the number of days in a calendar month (0 = January, 11 = December).
+ */
+export const numDaysInMonth = (month: number, year: number) => (month === 1 && isLeapYear(year) ? 1 : 0) + commonDaysInMonth[month]
+
+/**
+ * Whether or not year is a leap year.
+ */
+export const isLeapYear = (year: number) => year !== 0 && year % 4 === 0
 
 const getDefault = <Container extends Object>(path: keyof Container, container: Container) => {
   const value = container[path]
   return (typeof value === 'function') ? value() : value
 }
 
-const expandDefaults = (obj: Object) => {
+const expandFlatDefaults = (obj: Object) => {
   const o = {}
   for (const k in obj) {
     const v = obj[k]

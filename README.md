@@ -121,11 +121,15 @@ Properties:
 
 * `date` _{representMonth.DateAdapter}_: the `representMonth.DateAdapter` instance of the date being represented.
 * `numberOfDays` _{number}_: the number of days in the month
-* `weeks` _{array}_: the list of days in each week (i.e. 1 through 31 depending on the month). Each week array will always represent each of the 7 days and the first index of the week corresponds to the `startingDayOfWeek` argument. If a value is `null`, that particular day does not exist in the month. This is visually equivalent to when there are blank spaces in a calendar in the first and last weeks of a month that overlap with the previous month.
+* `weeks` _{(number | null)[][]}_: the list of days in each week (i.e. 1 through 31 depending on the month). Each week array will always represent each of the 7 days and the first index of the week corresponds to the `startingDayOfWeek` argument. If a value is `null`, that particular day does not exist in the month. This is visually equivalent to when there are blank spaces in a calendar in the first and last weeks of a month that overlap with the previous month.
+* `prevMonthNumberOfDays` _{number}_: the number of days in the previous month
+* `prevMonthLastWeek` _{(number | null)[]}_: the last week of the previous month that overlaps with the first week of the current month.
+* `nextMonthNumberOfDays` _{number}_: the number of days in the next month
+* `nextMonthFirstWeek` _{(number | null)[]}_: the first week of the next month that overlaps with the last week of the current month.
 
 A typical usage of this is to render calendars. For example:
 
-```js
+```ts
 const monthNames = [
   'January',
   'February',
@@ -143,23 +147,80 @@ const monthNames = [
 const year = 2020
 const cellSize = 4
 const calWidth = 7 * cellSize + 8
-monthNames.forEach(function (monthName, index) {
+monthNames.forEach((monthName, index) => {
   const label = `${monthName} ${year}`
   console.log(`${' '.repeat((calWidth - label.length) / 2)}${label}`) // centers the label over the calendar
-  const representation = representMonth({date: new Date(year, index)})
-  const renderData = [['S', 'M', 'T', 'W', 'T', 'F', 'S']]
+  const representation = representMonth({date: new Date(year, index)}) //?
+  const renderData: (string | number | null)[][] = [['S', 'M', 'T', 'W', 'T', 'F', 'S']]
   renderData
     .concat(representation.weeks)
-    .map(week => week
-      .map(day => '' + (day || '')) // coerce each day to a string
-      .map(stringDay => stringDay.padStart(cellSize, ' '))
+    .map((week) => week
+      .map((day) => `${day || ''}`) // coerce each day to a string
+      .map((stringDay) => stringDay.padStart(cellSize, ' '))
       .join(' ')
     )
-    .forEach(weekString => console.log(weekString))
+    .forEach((weekString) => console.log(weekString))
 })
 ```
 
 The preceeding code results in console logging of each month of the 2020 calendar year.
+
+Here's a slightly more advanced example which uses the data to console log calendar months with previous and next months days showing up in square brackets (e.g. [30])
+
+```ts
+const monthNames = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+]
+const year = 2020
+const cellSize = 6
+const calWidth = 7 * cellSize + 8
+monthNames.forEach((monthName, index) => {
+  const label = `${monthName} ${year}`
+  console.log(`${' '.repeat((calWidth - label.length) / 2)}${label}`) // centers the label over the calendar
+  const representation = representMonth({date: new Date(year, index)}) //?
+  const renderData: (string | number | null)[][] = [['S', 'M', 'T', 'W', 'T', 'F', 'S']]
+  renderData
+    .concat(representation.weeks)
+    .map((week, weekIndex) => {
+      // checking weekIndex as if it were 1-based because we added the header for the week day labels
+      const maybeFirstWeek = weekIndex === 1 ? representation.prevMonthLastWeek : void 0
+      const maybeLastWeek = weekIndex === representation.weeks.length ? representation.nextMonthFirstWeek : void 0
+      const edgeWeek = maybeFirstWeek || maybeLastWeek
+      return week
+        .map((day, index) => { // coerce each day to a string
+          if (edgeWeek && edgeWeek[index]) return `[${edgeWeek[index] || ''}]`
+          return `${day || ''}`
+        }) 
+        .map((stringDay) => stringDay.padStart(cellSize, ' '))
+        .join(' ')
+    })
+    .forEach((weekString) => console.log(weekString))
+})
+```
+
+### isLeapYear(year: number): boolean
+`import { isLeapYear } from '@nerdo/utils'`
+> Whether or not the year is a leap year.
+
+* `year` _{number}_ the year
+
+### numDaysInMonth(month: number, year: number): number
+`import { numDaysInMonth } from '@nerdo/utils'`
+> Gets the number of days in a calendar month.
+
+* `month` _{number}_ the month; 0 = January, 11 = December
+* `year` _{number}_ the year
 
 ### DayOfWeek
 `import { DayOfWeek } from '@nerdo/utils'`
