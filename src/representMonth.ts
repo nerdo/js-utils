@@ -89,7 +89,7 @@ export const representMonth: RepresentMonthFunction = (args = <RepresentMonthFun
     currentYear - (currentMonthNumber === 0 ? 1 : 0)
   )
   const numPrevNulls = weeks[0].filter((n) => n === null).length
-  const prevMonthLastWeek = (new Array(numPrevNulls))
+  const prevMonthLastWeek: Day[] = (new Array(numPrevNulls))
     .fill(null)
     .map((_, index) => 1 + prevMonthNumberOfDays - (numPrevNulls - index))
     .concat((new Array(Math.max(0, 7 - numPrevNulls))).fill(null))
@@ -98,8 +98,8 @@ export const representMonth: RepresentMonthFunction = (args = <RepresentMonthFun
     currentYear + (currentMonthNumber === 11 ? 1 : 0)
   )
   const nextMonthGenerator = makeCounterGenerator(1, 1)
-  const nextMonthFirstWeek = [...weeks[weeks.length - 1]]
-    .map((value) => value === null ? nextMonthGenerator.next().value! : null)
+  const nextMonthFirstWeek: Day[] = [...weeks[weeks.length - 1]]
+    .map((value) => value === null ? nextMonthGenerator.next().value : null) as Day[]
 
   return {
     date,
