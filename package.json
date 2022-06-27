@@ -20,7 +20,7 @@
     "test": "vitest",
     "build": "microbundle",
     "watch": "microbundle -w",
-    "prepublishOnly": "vitest && microbundle"
+    "prepublishOnly": "vitest run && microbundle"
   },
   "devDependencies": {
     "microbundle": "^0.12.2",
