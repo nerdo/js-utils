@@ -1,26 +1,13 @@
 import { representMonth } from '../../src/representMonth'
 
-const monthNames = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December'
-]
+const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 const year = 2020
 const cellSize = 6
 const calWidth = 7 * cellSize + 8
 monthNames.forEach((monthName, index) => {
   const label = `${monthName} ${year}`
   console.log(`${' '.repeat((calWidth - label.length) / 2)}${label}`) // centers the label over the calendar
-  const representation = representMonth({date: new Date(year, index)}) //?
+  const representation = representMonth({ date: new Date(year, index) }) //?
   const renderData: (string | number | null)[][] = [['S', 'M', 'T', 'W', 'T', 'F', 'S']]
   renderData
     .concat(representation.weeks)
@@ -30,13 +17,13 @@ monthNames.forEach((monthName, index) => {
       const maybeLastWeek = weekIndex === representation.weeks.length ? representation.nextMonthFirstWeek : void 0
       const edgeWeek = maybeFirstWeek || maybeLastWeek
       return week
-        .map((day, index) => { // coerce each day to a string
+        .map((day, index) => {
+          // coerce each day to a string
           if (edgeWeek && edgeWeek[index]) return `[${edgeWeek[index] || ''}]`
           return `${day || ''}`
-        }) 
-        .map((stringDay) => stringDay.padStart(cellSize, ' '))
+        })
+        .map(stringDay => stringDay.padStart(cellSize, ' '))
         .join(' ')
     })
-    .forEach((weekString) => console.log(weekString))
+    .forEach(weekString => console.log(weekString))
 })
-

@@ -8,13 +8,12 @@ describe('map', () => {
 
   it('should return the object', () => {
     const obj = {}
-    // @ts-ignore
     const mapped = map(obj)
     expect(mapped).toBe(obj)
   })
 
   describe('identity mapper', () => {
-    const identity = v => v
+    const identity = <T>(v: T) => v
 
     it('should call the mapper on undefined', () => {
       const mapper = vi.fn(identity)
@@ -66,11 +65,7 @@ describe('map', () => {
     it('should not traverse an array', () => {
       const mapper = vi.fn(identity)
       const obj = {
-        a: [
-          9,
-          8,
-          7
-        ]
+        a: [9, 8, 7],
       }
       map(obj, mapper)
       expect(mapper.mock.calls.length).toBe(2)
@@ -78,7 +73,7 @@ describe('map', () => {
 
     it('should not traverse a function', () => {
       const mapper = vi.fn(identity)
-      const obj = { a: function () {} }
+      const obj = { a: function() {} }
       map(obj, mapper)
       expect(mapper.mock.calls.length).toBe(2)
     })
@@ -95,7 +90,7 @@ describe('map', () => {
       const obj = {
         a: 1,
         b: 2,
-        c: 3
+        c: 3,
       }
       map(obj, mapper)
       expect(mapper.mock.calls.length).toBe(4)
@@ -108,10 +103,10 @@ describe('map', () => {
         b: {
           foo: true,
           bar: {
-            x: false
-          }
+            x: false,
+          },
         },
-        c: 3
+        c: 3,
       }
       map(obj, mapper)
       expect(mapper.mock.calls.length).toBe(7)
@@ -131,20 +126,20 @@ describe('map', () => {
         c: null,
         d: void 0,
         e: '',
-        f: function () {},
+        f: function() {},
         foo: {
-          [Symbol.for('something')]: () => true
+          [Symbol.for('something')]: () => true,
         },
         bar: {
           justice: {
-            symbol: Symbol.for('something else')
+            symbol: Symbol.for('something else'),
           },
           hello: {
             1: [0, 1, 2],
-            kitty: {}
-          }
+            kitty: {},
+          },
         },
-        notPlainObject: new NotPlainObject()
+        notPlainObject: new NotPlainObject(),
       }
 
       map(obj, mapper)
@@ -154,10 +149,10 @@ describe('map', () => {
 
   describe('mutating mapper', () => {
     it('should not traverse nested properties replaced by mapper', () => {
-      const pathsCalled = []
-      const mapper = vi.fn((v, {path}) => {
+      const pathsCalled: string[] = []
+      const mapper = vi.fn((v, { path }) => {
         pathsCalled.push(path.join('.'))
-        return (typeof v === 'object' && v.remove) ? void 0 : v
+        return typeof v === 'object' && v.remove ? void 0 : v
       })
       const obj = {
         a: {
@@ -165,10 +160,10 @@ describe('map', () => {
             c: {
               remove: true,
               what: 1,
-              ever: 2
-            }
-          }
-        }
+              ever: 2,
+            },
+          },
+        },
       }
 
       map(obj, mapper)

@@ -17,12 +17,12 @@ describe('clone', () => {
     const obj = {
       a: {
         b: {
-          foo: 'bar'
+          foo: 'bar',
         },
         c: {
-          xyz: 123
-        }
-      }
+          xyz: 123,
+        },
+      },
     }
     const cloned = clone(obj)
     expect(cloned).not.toBe(obj)
@@ -33,11 +33,7 @@ describe('clone', () => {
   })
   it('should clone simple arrays', () => {
     const obj = {
-      a: [
-        9,
-        8,
-        7
-      ]
+      a: [9, 8, 7],
     }
     const cloned = clone(obj)
     expect(cloned).not.toBe(obj)
@@ -49,10 +45,10 @@ describe('clone', () => {
       a: [
         9,
         {
-          foo: 'bar'
+          foo: 'bar',
         },
-        7
-      ]
+        7,
+      ],
     }
     const cloned = clone(obj)
     expect(cloned).not.toBe(obj)

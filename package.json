@@ -1,30 +1,53 @@
 {
   "name": "@nerdo/utils",
-  "description": "nerdo's JavaScript utilities.",
-  "version": "1.2.1",
+  "description": "nerdo's utilities, written in TypeScript",
+  "sideEffects": false,
+  "version": "2.0.0",
   "author": "Dannel Albert <cuebix@gmail.com>",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/nerdo/js-utils.git"
-  },
-  "main": "dist/nerdo-utils.js",
-  "umd:main": "dist/nerdo-utils.umd.js",
-  "module": "dist/nerdo-utils.m.js",
-  "esmodule": "dist/nerdo-utils.modern.js",
-  "types": "dist/types/index.d.ts",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "files": [
-    "dist/*"
+    "dist",
+    "src"
   ],
-  "scripts": {
-    "test": "vitest",
-    "build": "microbundle",
-    "watch": "microbundle -w",
-    "prepublishOnly": "vitest run && microbundle"
+  "engines": {
+    "node": ">=10"
   },
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "vitest",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "module": "dist/utils.esm.js",
+  "size-limit": [
+    {
+      "path": "dist/utils.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/utils.esm.js",
+      "limit": "10 KB"
+    }
+  ],
   "devDependencies": {
-    "microbundle": "^0.15.0",
-    "standard": "^14.3.4",
+    "@nerdo/prettier-config": "^1.0.1",
+    "@size-limit/preset-small-lib": "^8.1.0",
+    "husky": "^8.0.1",
+    "size-limit": "^8.1.0",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.4.0",
+    "typescript": "^4.8.4",
     "vitest": "^0.16.0"
-  }
+  },
+  "prettier": "@nerdo/prettier-config"
 }

@@ -25,8 +25,7 @@ describe('representMonth', () => {
       it('should default to the current date with other arguments', () => {
         const DateAdapter = class extends Date {}
         representMonth.DateAdapter = DateAdapter
-        // @ts-ignore
-        const rep = representMonth({foo: 'bar'})
+        const rep = representMonth({ foo: 'bar' })
         expect(rep.date).toBeInstanceOf(DateAdapter)
       })
     })
@@ -65,7 +64,10 @@ describe('representMonth', () => {
     describe('custom starting day of week', () => {
       describe('Tuesday', () => {
         it('should return the days in the month, starting with Tuesday', () => {
-          const rep = representMonth({ date, startingDayOfWeek: DayOfWeek.Tuesday })
+          const rep = representMonth({
+            date,
+            startingDayOfWeek: DayOfWeek.Tuesday,
+          })
           expect(rep.numberOfDays).toBe(31)
           expect(rep.weeks).toBeInstanceOf(Array)
           expect(rep.weeks.length).toBe(5)
@@ -92,7 +94,10 @@ describe('representMonth', () => {
 
       describe('Thursday', () => {
         it('should return the days in the month, starting with Thursday', () => {
-          const rep = representMonth({ date, startingDayOfWeek: DayOfWeek.Thursday })
+          const rep = representMonth({
+            date,
+            startingDayOfWeek: DayOfWeek.Thursday,
+          })
           expect(rep.numberOfDays).toBe(31)
           expect(rep.weeks).toBeInstanceOf(Array)
           expect(rep.weeks.length).toBe(6)
@@ -121,7 +126,10 @@ describe('representMonth', () => {
 
       describe('Saturday', () => {
         it('should return the days in the month, starting with Saturday', () => {
-          const rep = representMonth({ date, startingDayOfWeek: DayOfWeek.Saturday })
+          const rep = representMonth({
+            date,
+            startingDayOfWeek: DayOfWeek.Saturday,
+          })
           expect(rep.numberOfDays).toBe(31)
           expect(rep.weeks).toBeInstanceOf(Array)
           expect(rep.weeks.length).toBe(5)

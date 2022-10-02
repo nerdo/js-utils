@@ -1,31 +1,35 @@
-interface Mapper {
-  (value: unknown, obj: object, path?: Array<string>): unknown
-}
+export type Mapper = (value: unknown, context: object, path?: string[]) => unknown
 
 interface Meta {
-  root: any,
+  root: unknown
   parentPath: string[]
 }
 
-const recursiveMap = <T>(obj: T, mapper: Mapper, meta: Meta): any => {
-  if (typeof obj !== 'object') {
-    return obj
+const recursiveMap = <Subject, RecursivelyMappedSubject>(subject: Subject, mapper: Mapper, meta: Meta): RecursivelyMappedSubject | Subject => {
+  if (typeof subject !== 'object') {
+    return subject
   }
 
-  for (const key in obj as unknown as object) {
-    obj[key] = mapper(obj[key], {object: meta.root, path: [].concat(meta.parentPath, key)})
-    const current = obj[key]
+  for (const key in subject) {
+    subject[key] = mapper(subject[key], {
+      object: meta.root,
+      path: [...meta.parentPath, key],
+    }) as typeof subject[typeof key]
+    const current = subject[key]
     if (typeof current === 'object' && !Array.isArray(current)) {
-      recursiveMap(current, mapper, {...meta, parentPath: meta.parentPath.concat(key)})
+      recursiveMap(current, mapper, {
+        ...meta,
+        parentPath: [...meta.parentPath, key],
+      })
     }
   }
 
-  return obj
+  return subject
 }
 
-export const map = <I, O>(obj: I, mapper: Mapper): O => {
-  const subject = typeof mapper === 'function' ? mapper(obj, {object: obj, path: []}) : obj
-  return recursiveMap(subject, mapper, {root: obj, parentPath: []})
+export const map = <Input, MappedInput>(input: Input, mapper: Mapper): MappedInput => {
+  const subject = typeof mapper === 'function' ? mapper(input, { object: input, path: [] }) : input
+  return recursiveMap(subject, mapper, { root: input, parentPath: [] }) as MappedInput
 }
 
 export default map
