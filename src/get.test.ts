@@ -7,27 +7,25 @@ describe('get', () => {
   })
 
   it('should return undefined when given no arguments', () => {
-    // @ts-ignore
     expect(get()).toBeUndefined()
   })
 
   it('should return the object when given no path', () => {
     const obj = {}
-    // @ts-ignore
     expect(get(obj)).toBe(obj)
   })
 
   describe('string path', () => {
     it('should return the default value for paths that do not exist', () => {
       const obj = {
-        a: {}
+        a: {},
       }
       const result = get(obj, 'a.b.c', 'the default value')
       expect(result).toBe('the default value')
     })
 
     it('should return the value for a top level path', () => {
-      const obj = {a: 1}
+      const obj = { a: 1 }
       const result = get(obj, 'a')
       expect(result).toBe(obj.a)
     })
@@ -36,9 +34,9 @@ describe('get', () => {
       const obj = {
         a: {
           b: {
-            c: 1
-          }
-        }
+            c: 1,
+          },
+        },
       }
       const result = get(obj, 'a.b.c')
       expect(result).toBe(obj.a.b.c)
@@ -48,14 +46,14 @@ describe('get', () => {
   describe('array path', () => {
     it('should return the default value for paths that do not exist', () => {
       const obj = {
-        a: {}
+        a: {},
       }
       const result = get(obj, ['a', 'b', 'c'], 'the default value')
       expect(result).toBe('the default value')
     })
 
     it('should return the value for a top level path', () => {
-      const obj = {a: 1}
+      const obj = { a: 1 }
       const result = get(obj, ['a'])
       expect(result).toBe(obj.a)
     })
@@ -64,9 +62,9 @@ describe('get', () => {
       const obj = {
         a: {
           'b.b': {
-            c: 1
-          }
-        }
+            c: 1,
+          },
+        },
       }
       const result = get(obj, ['a', 'b.b', 'c'])
       expect(result).toBe(obj.a['b.b'].c)
