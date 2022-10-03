@@ -57,6 +57,25 @@ describe('clone', () => {
     expect(obj.a[1]).not.toBe(cloned.a[1])
   })
 
+  it('should clone objects with undefined values', () => {
+    const obj = {
+      name: 'Randall Bosco',
+      email: void 0,
+      avatarUrl: 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/733.jpg',
+      address: {
+        street: '4540 Valentina Vista',
+        city: 'Fort Lydia',
+        state: 'WI',
+        zip: '25069',
+      },
+    }
+
+    const cloned = clone(obj)
+
+    expect(cloned).not.toBe(obj)
+    expect(cloned).toEqual(obj)
+  })
+
   it('should not properly clone objects with circular references', () => {
     // this is a limitation of map that might be solved using Map to keep track of visited objects
     function Foo() {
