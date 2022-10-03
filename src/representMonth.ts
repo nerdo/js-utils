@@ -1,4 +1,4 @@
-import { DayOfWeek } from './DayOfWeek'
+import { DayOfWeek, DayOfWeekValues } from './DayOfWeek'
 
 export interface DateInterface {
   setDate: (dayValue: number) => void
@@ -10,7 +10,7 @@ export interface DateInterface {
 
 export interface RepresentMonthFunctionArgs {
   date?: DateInterface
-  startingDayOfWeek?: DayOfWeek
+  startingDayOfWeek?: DayOfWeekValues
 }
 
 export interface DateConstructor {
@@ -36,7 +36,7 @@ export interface RepresentMonthFunction {
 
 const defaults = {
   date: () => new representMonth.DateAdapter(),
-  startingDayOfWeek: 0,
+  startingDayOfWeek: DayOfWeek.Sunday,
 }
 
 const makeCounterGenerator = (n: number, offset: number) => {
