@@ -1,5 +1,5 @@
 import map from './map'
-import isDate from './isDate'
+import isDateObject from './isDateObject'
 
 export const clone = <T>(subject: T): T =>
   map(subject, (v) => {
@@ -13,7 +13,7 @@ export const clone = <T>(subject: T): T =>
       return v.slice().map(clone)
     }
 
-    if (isDate(v)) {
+    if (isDateObject(v)) {
       return new Date((v as Date).valueOf())
     }
 

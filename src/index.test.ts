@@ -20,7 +20,7 @@ describe('index', () => {
   it('should export DayOfWeek', () => {
     expect(index.DayOfWeek).toBeDefined()
   })
-  it('should export isDate', () => {
-    expect(index.isDate).toBeDefined()
+  it('should export isDateObject', () => {
+    expect(index.isDateObject).toBeDefined()
   })
 })
