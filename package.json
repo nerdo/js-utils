@@ -2,7 +2,7 @@
   "name": "@nerdo/utils",
   "description": "nerdo's utilities, written in TypeScript",
   "sideEffects": false,
-  "version": "2.0.2",
+  "version": "2.1.0",
   "author": "Dannel Albert <cuebix@gmail.com>",
   "license": "MIT",
   "files": [
