@@ -6,6 +6,13 @@ Install it:
 ```bash
 npm install @nerdo/utils --save
 ```
+### isDateObject(object)
+`import { isDateObject } from '@nerdo/utils'`
+> Tests whether an object is a Date object.
+
+* `object` _{object}_: the object in question.
+
+`isDateObject(...) returns true if the object is a Date object, false otherwise.`
 
 ### map(object, mapper)
 `import { map } from '@nerdo/utils'`
