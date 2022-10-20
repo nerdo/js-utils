@@ -140,10 +140,11 @@ describe('map', () => {
           },
         },
         notPlainObject: new NotPlainObject(),
+        date: new Date(),
       }
 
       map(obj, mapper)
-      expect(mapper.mock.calls.length).toBe(16)
+      expect(mapper.mock.calls.length).toBe(17)
     })
   })
 
