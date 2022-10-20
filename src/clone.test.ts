@@ -85,4 +85,13 @@ describe('clone', () => {
     const obj = new Foo()
     expect(() => clone(obj)).toThrow()
   })
+
+  it('should clone dates', () => {
+    const date = new Date(1666229644651)
+
+    const cloned = clone(date)
+
+    expect(cloned).not.toBe(date)
+    expect(cloned.valueOf()).toEqual(date.valueOf())
+  })
 })
